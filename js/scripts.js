@@ -1,4 +1,5 @@
-alert('Hello world');
-let favortieFood = "Taco"; 
-
-document.write(favortieFood);
+let pokemonList = {};
+pokemonList.name = "Bulbasaur";
+pokemonList.height = 7;
+pokemonList.types = ["grass", "poison"];
+console.log(pokemonList);
