@@ -1,11 +1,5 @@
-let pokemonList = {};
-pokemonList.name = "Bulbasaur";
-pokemonList.height = 7;
-pokemonList.types = ["grass", "poison"];
-pokemonList.name = "Charmander";
-pokemonList.height = 6;
-pokemonList.types = ["fire"];
-pokemonList.name = "Squirtle";
-pokemonList.height = 5;
-pokemonList.types = ["water"];
-console.log(pokemonList);
+let pokemonList = [
+    { name: 'Bulbasaur', height: 7, types: ['grass', 'poison'] },
+    {name: 'Pidgey', height: 1, types: ['flying', 'normal'] },
+    {name: 'Crobat', height: 5, types: ['flying', 'poison']}
+]
