@@ -1,22 +1,7 @@
 var pokemonRepository = (function () {
     //Array list
-    let repository = [
-    { 
-        name: 'Bulbasaur', 
-        height: 7, 
-        types: ['grass', 'poison'] 
-    },
-    {
-        name: 'Pidgey', 
-        height: 1,
-        types: ['flying', 'normal'] 
-    },
-    {
-        name: 'Crobat',
-        height: 5,
-        types: ['flying', 'poison']
-    }
-];
+    let repository = [];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 function add(pokemon) {
     if (typeof pokemon === 'object' &&
     'name' in pokemon &&
@@ -62,12 +47,6 @@ return {
 };
 })();
 // add a new object(pokemon) to the pokemonList
-console.log(pokemonRepository.getAll());
-pokemonRepository.add({
-    name: 'Milotic',
-    height: 20,
-    types: ['water']
-});
 console.log(pokemonRepository.getAll());
 // print the list of names from pokemonList and coresponding height of that name
 pokemonRepository.getAll().forEach(function(pokemon) {
