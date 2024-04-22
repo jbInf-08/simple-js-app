@@ -1,25 +1,39 @@
 /* styles.css */
-li {
-  list-style: none;
+
+/* Apply gradient background to the entire body */
+body {
+  background: linear-gradient(135deg, #B9D3EE, #7BBDF5); /* Gradient background */
 }
 
-.button-class {
-  background-color: red;
+/* Center the name tiles */
+.pokemon-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Style the name tiles */
+.pokemon-list li {
+  background-color: #fff; /* White background color */
+  margin: 10px;
+  padding: 20px;
+  border: 2px solid #ddd; /* Light grey border */
+  border-radius: 8px; /* Add border radius for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+}
+
+.pokemon-list li button {
+  background-color: #ffad00; /* Orange button background color */
+  color: white; /* White text color */
   border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
   border-radius: 8px;
+  padding: 10px 20px;
 }
 
+/* Loader styles */
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid transparent; /* Transparent border */
+  border-top: 16px solid #ffad00; /* Orange */
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -32,57 +46,36 @@ li {
   display: none;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Modal styles */
+.modal-content {
+  background-color: black; /* Black background color */
+  border: 2px solid white; /* Outer white border */
+  border-radius: 50%; /* Circular shape */
+  width: 200px; /* Adjust width as needed */
+  height: 200px; /* Adjust height as needed */
+  padding: 20px; /* Space between borders */
+  box-sizing: border-box; /* Include padding in width and height */
+  position: relative; /* Position for inner border */
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
 }
 
-#modal-container {
-  display: none;
+/* Inner white border */
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 10px; /* Adjust inner border distance from outer border */
+  left: 10px; /* Adjust inner border distance from outer border */
+  width: calc(100% - 20px); /* Adjust inner border width */
+  height: calc(100% - 20px); /* Adjust inner border height */
+  border: 2px solid white; /* Inner white border */
+  border-radius: 50%; /* Circular shape */
 }
 
-#modal-container.is-visible {
-  position: fixed;
-  padding: 20px;
-  box-sizing: border-box;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
-  overflow: auto; 
-  display: grid;
-  text-align: center;
-  
+.modal-content img {
+  max-width: 100%; /* Ensure image doesn't exceed modal width */
+  max-height: 100%; /* Ensure image doesn't exceed modal height */
 }
 
-.modal {
-  margin: auto;
-  display: inline-block;
-  box-sizing: border-box;
-  background: #fff;
-  padding: 15px;
-  width: 100%;
-  max-width: 700px;
-  text-align: left;
-}
-
-.modal-close {
-  float: right;
-  -webkit-appearance: none;
-  appearance: none;
-  border: 0;
-  background: none;
-  color: #777;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.modal h2 {
-  margin-top: 0;
-}
-
-.modal p {
-  margin-bottom: 0;
-}
+/* Add any additional CSS rules if needed */
