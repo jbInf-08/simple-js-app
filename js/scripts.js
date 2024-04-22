@@ -17,7 +17,8 @@ var pokemonRepository = (function () {
         let listItem = document.createElement('li');
         let button = document.createElement('button');
         button.innerText = pokemon.name;
-        button.classList.add('button-class');
+        button.classList.add('btn', 'btn-primary'); // Bootstrap button classes
+        listItem.classList.add('list-group-item'); // Bootstrap list-group-item class
         listItem.appendChild(button);
         pokemonListElement.appendChild(listItem);
         button.addEventListener('click', function() {
@@ -40,7 +41,7 @@ var pokemonRepository = (function () {
         modalBody.innerHTML = `
             <p>Name: ${pokemon.name}</p>
             <p>Height: ${pokemon.height}</p>
-            <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
+            <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="img-fluid">
             <!-- Add more details here if needed -->
         `;
         $('#bootstrapModal').modal('show');
@@ -86,56 +87,56 @@ var pokemonRepository = (function () {
     let currentX = null;
 
     // Replace pointer events with mouse events
-container.addEventListener('mousedown', function(event) {
-    startX = event.clientX;
-});
+    container.addEventListener('mousedown', function(event) {
+        startX = event.clientX;
+    });
 
-container.addEventListener('mousemove', function(event) {
-    if (startX !== null) {
-        currentX = event.clientX;
-    }
-});
-
-container.addEventListener('mouseup', function(event) {
-    if (startX !== null && currentX !== null) {
-        let deltaX = currentX - startX;
-        if (deltaX > 0) {
-            // Swiped right, navigate to the previous item
-            showPreviousPokemon();
-        } else if (deltaX < 0) {
-            // Swiped left, navigate to the next item
-            showNextPokemon();
+    container.addEventListener('mousemove', function(event) {
+        if (startX !== null) {
+            currentX = event.clientX;
         }
-        startX = null;
-        currentX = null;
-    }
-});
+    });
 
-// Add touch events for mobile support
-container.addEventListener('touchstart', function(event) {
-    startX = event.touches[0].clientX;
-});
-
-container.addEventListener('touchmove', function(event) {
-    if (startX !== null) {
-        currentX = event.touches[0].clientX;
-    }
-});
-
-container.addEventListener('touchend', function(event) {
-    if (startX !== null && currentX !== null) {
-        let deltaX = currentX - startX;
-        if (deltaX > 0) {
-            // Swiped right, navigate to the previous item
-            showPreviousPokemon();
-        } else if (deltaX < 0) {
-            // Swiped left, navigate to the next item
-            showNextPokemon();
+    container.addEventListener('mouseup', function(event) {
+        if (startX !== null && currentX !== null) {
+            let deltaX = currentX - startX;
+            if (deltaX > 0) {
+                // Swiped right, navigate to the previous item
+                showPreviousPokemon();
+            } else if (deltaX < 0) {
+                // Swiped left, navigate to the next item
+                showNextPokemon();
+            }
+            startX = null;
+            currentX = null;
         }
-        startX = null;
-        currentX = null;
-    }
-});
+    });
+
+    // Add touch events for mobile support
+    container.addEventListener('touchstart', function(event) {
+        startX = event.touches[0].clientX;
+    });
+
+    container.addEventListener('touchmove', function(event) {
+        if (startX !== null) {
+            currentX = event.touches[0].clientX;
+        }
+    });
+
+    container.addEventListener('touchend', function(event) {
+        if (startX !== null && currentX !== null) {
+            let deltaX = currentX - startX;
+            if (deltaX > 0) {
+                // Swiped right, navigate to the previous item
+                showPreviousPokemon();
+            } else if (deltaX < 0) {
+                // Swiped left, navigate to the next item
+                showNextPokemon();
+            }
+            startX = null;
+            currentX = null;
+        }
+    });
 
     function showPreviousPokemon() {
         if (currentIndex > 0) {
