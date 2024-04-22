@@ -2,6 +2,7 @@ var pokemonRepository = (function () {
     // Array list
     let pokemonList = [];
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    let currentIndex = 0;
 
     function add(pokemon) {
         pokemonList.push(pokemon);
@@ -25,6 +26,8 @@ var pokemonRepository = (function () {
     }
 
     function showDetails(pokemon) {
+        // Update currentIndex before showing details
+        currentIndex = pokemonList.indexOf(pokemon);
         loadDetails(pokemon).then(function () {
             showModal(pokemon);
         });
@@ -37,14 +40,10 @@ var pokemonRepository = (function () {
         modalBody.innerHTML = `
             <p>Name: ${pokemon.name}</p>
             <p>Height: ${pokemon.height}</p>
-            <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image"> <!-- Add this line to display the image -->
+            <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
             <!-- Add more details here if needed -->
         `;
-        $('#bootstrapModal').modal('show'); // Show the Bootstrap modal using jQuery
-    }
-
-    function hideModal() {
-        $('#bootstrapModal').modal('hide'); // Hide the Bootstrap modal using jQuery
+        $('#bootstrapModal').modal('show');
     }
 
     function loadList() {
@@ -82,6 +81,76 @@ var pokemonRepository = (function () {
             });
     }
 
+    let container = document.querySelector('.pokemon-list');
+    let startX = null;
+    let currentX = null;
+
+    // Replace pointer events with mouse events
+container.addEventListener('mousedown', function(event) {
+    startX = event.clientX;
+});
+
+container.addEventListener('mousemove', function(event) {
+    if (startX !== null) {
+        currentX = event.clientX;
+    }
+});
+
+container.addEventListener('mouseup', function(event) {
+    if (startX !== null && currentX !== null) {
+        let deltaX = currentX - startX;
+        if (deltaX > 0) {
+            // Swiped right, navigate to the previous item
+            showPreviousPokemon();
+        } else if (deltaX < 0) {
+            // Swiped left, navigate to the next item
+            showNextPokemon();
+        }
+        startX = null;
+        currentX = null;
+    }
+});
+
+// Add touch events for mobile support
+container.addEventListener('touchstart', function(event) {
+    startX = event.touches[0].clientX;
+});
+
+container.addEventListener('touchmove', function(event) {
+    if (startX !== null) {
+        currentX = event.touches[0].clientX;
+    }
+});
+
+container.addEventListener('touchend', function(event) {
+    if (startX !== null && currentX !== null) {
+        let deltaX = currentX - startX;
+        if (deltaX > 0) {
+            // Swiped right, navigate to the previous item
+            showPreviousPokemon();
+        } else if (deltaX < 0) {
+            // Swiped left, navigate to the next item
+            showNextPokemon();
+        }
+        startX = null;
+        currentX = null;
+    }
+});
+
+    function showPreviousPokemon() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            showDetails(pokemonList[currentIndex]);
+        }
+    }
+
+    function showNextPokemon() {
+        if (currentIndex < pokemonList.length - 1) {
+            currentIndex++;
+            showDetails(pokemonList[currentIndex]);
+        }
+    }
+
     return {
         add: add,
         getAll: getAll,
@@ -89,13 +158,15 @@ var pokemonRepository = (function () {
         loadList: loadList,
         loadDetails: loadDetails,
         showDetails: showDetails,
-        showModal: showModal,
-        hideModal: hideModal
+        showModal: showModal
     };
 })();
 
 pokemonRepository.loadList().then(function() {
-    pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.getAll().forEach(function (pokemon, index) {
         pokemonRepository.addListItem(pokemon);
+        if (index === 0) {
+            pokemonRepository.showDetails(pokemon);
+        }
     });
 });
