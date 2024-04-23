@@ -16,7 +16,7 @@ var pokemonRepository = (function () {
         let pokemonListElement = document.querySelector('.pokemon-list');
         let listItem = document.createElement('li');
         let button = document.createElement('button');
-        button.innerText = pokemon.name;
+        button.innerText = pokemon.name.toUpperCase(); // Capitalize Pokemon name
         button.classList.add('btn', 'btn-primary'); // Bootstrap button classes
         listItem.classList.add('list-group-item'); // Bootstrap list-group-item class
         listItem.appendChild(button);
@@ -37,13 +37,44 @@ var pokemonRepository = (function () {
     function showModal(pokemon) {
         let modalTitle = document.querySelector('.modal-title');
         let modalBody = document.querySelector('.modal-body');
-        modalTitle.innerText = pokemon.name;
+        modalTitle.innerText = pokemon.name.toUpperCase(); // Capitalize Pokemon name
         modalBody.innerHTML = `
-            <p>Name: ${pokemon.name}</p>
+            <p>Name: ${pokemon.name.toUpperCase()}</p> <!-- Capitalize Pokemon name -->
             <p>Height: ${pokemon.height}</p>
+            <p>Ability: ${pokemon.ability}</p> <!-- Add ability -->
+            <p>Type: ${pokemon.type}</p> <!-- Add type -->
             <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="img-fluid">
             <!-- Add more details here if needed -->
         `;
+
+        // Add swipe functionality within the modal
+        let startX = null;
+        let currentX = null;
+        modalBody.addEventListener('touchstart', function(event) {
+            startX = event.touches[0].clientX;
+        });
+
+        modalBody.addEventListener('touchmove', function(event) {
+            if (startX !== null) {
+                currentX = event.touches[0].clientX;
+            }
+        });
+
+        modalBody.addEventListener('touchend', function(event) {
+            if (startX !== null && currentX !== null) {
+                let deltaX = currentX - startX;
+                if (deltaX > 50) {
+                    // Swiped right, navigate to the previous Pokemon
+                    showPreviousPokemon();
+                } else if (deltaX < -50) {
+                    // Swiped left, navigate to the next Pokemon
+                    showNextPokemon();
+                }
+                startX = null;
+                currentX = null;
+            }
+        });
+
         $('#bootstrapModal').modal('show');
     }
 
@@ -76,6 +107,10 @@ var pokemonRepository = (function () {
             .then(function (details) {
                 item.imageUrl = details.sprites.front_default;
                 item.height = details.height;
+                item.ability = details.abilities[0].ability.name; // Get first ability
+                // Get types
+                item.types = details.types.map(type => type.type.name);
+                item.type = item.types.join(', '); // Join multiple types with comma if more than one
             })
             .catch(function (e) {
                 console.error(e);
@@ -164,10 +199,7 @@ var pokemonRepository = (function () {
 })();
 
 pokemonRepository.loadList().then(function() {
-    pokemonRepository.getAll().forEach(function (pokemon, index) {
+    pokemonRepository.getAll().forEach(function (pokemon) {
         pokemonRepository.addListItem(pokemon);
-        if (index === 0) {
-            pokemonRepository.showDetails(pokemon);
-        }
     });
 });
