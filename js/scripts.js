@@ -47,32 +47,21 @@ var pokemonRepository = (function () {
             <!-- Add more details here if needed -->
         `;
 
-        // Add swipe functionality within the modal
-        let startX = null;
-        let currentX = null;
-        modalBody.addEventListener('touchstart', function(event) {
-            startX = event.touches[0].clientX;
+        // Add arrows for navigation
+        let prevArrow = document.createElement('button');
+        prevArrow.innerHTML = '&lt;';
+        prevArrow.classList.add('prev-arrow');
+        modalBody.appendChild(prevArrow);
+        prevArrow.addEventListener('click', function() {
+            showPreviousPokemon();
         });
 
-        modalBody.addEventListener('touchmove', function(event) {
-            if (startX !== null) {
-                currentX = event.touches[0].clientX;
-            }
-        });
-
-        modalBody.addEventListener('touchend', function(event) {
-            if (startX !== null && currentX !== null) {
-                let deltaX = currentX - startX;
-                if (deltaX > 50) {
-                    // Swiped right, navigate to the previous Pokemon
-                    showPreviousPokemon();
-                } else if (deltaX < -50) {
-                    // Swiped left, navigate to the next Pokemon
-                    showNextPokemon();
-                }
-                startX = null;
-                currentX = null;
-            }
+        let nextArrow = document.createElement('button');
+        nextArrow.innerHTML = '&gt;';
+        nextArrow.classList.add('next-arrow');
+        modalBody.appendChild(nextArrow);
+        nextArrow.addEventListener('click', function() {
+            showNextPokemon();
         });
 
         $('#bootstrapModal').modal('show');
@@ -116,62 +105,6 @@ var pokemonRepository = (function () {
                 console.error(e);
             });
     }
-
-    let container = document.querySelector('.pokemon-list');
-    let startX = null;
-    let currentX = null;
-
-    // Replace pointer events with mouse events
-    container.addEventListener('mousedown', function(event) {
-        startX = event.clientX;
-    });
-
-    container.addEventListener('mousemove', function(event) {
-        if (startX !== null) {
-            currentX = event.clientX;
-        }
-    });
-
-    container.addEventListener('mouseup', function(event) {
-        if (startX !== null && currentX !== null) {
-            let deltaX = currentX - startX;
-            if (deltaX > 0) {
-                // Swiped right, navigate to the previous item
-                showPreviousPokemon();
-            } else if (deltaX < 0) {
-                // Swiped left, navigate to the next item
-                showNextPokemon();
-            }
-            startX = null;
-            currentX = null;
-        }
-    });
-
-    // Add touch events for mobile support
-    container.addEventListener('touchstart', function(event) {
-        startX = event.touches[0].clientX;
-    });
-
-    container.addEventListener('touchmove', function(event) {
-        if (startX !== null) {
-            currentX = event.touches[0].clientX;
-        }
-    });
-
-    container.addEventListener('touchend', function(event) {
-        if (startX !== null && currentX !== null) {
-            let deltaX = currentX - startX;
-            if (deltaX > 0) {
-                // Swiped right, navigate to the previous item
-                showPreviousPokemon();
-            } else if (deltaX < 0) {
-                // Swiped left, navigate to the next item
-                showNextPokemon();
-            }
-            startX = null;
-            currentX = null;
-        }
-    });
 
     function showPreviousPokemon() {
         if (currentIndex > 0) {
